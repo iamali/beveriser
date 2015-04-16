@@ -1,0 +1,23 @@
+{
+  "name": "Beveriser",
+  "version": "1.0",
+  "description": "This extension will remind you to drink.",
+
+  "manifest_version": 2,
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+ 
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "notifications",
+    "activeTab",
+    "storage"
+  ]
+}

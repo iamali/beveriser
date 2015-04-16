@@ -1,0 +1,65 @@
+body {
+	width: 200px;
+	text-align: center;
+	font: 100% 'Roboto', Arial, sans-serif;
+}
+
+p {
+	margin: 0;
+	font: 500 18px 'Roboto', Arial, sans-serif;
+	display: block;
+}
+
+p + p {
+	margin: 0 0 1em;
+}
+
+label {
+	font-size: 14px;
+}
+
+input {
+	padding: 10px;
+	width: 40px;
+	text-align: center;
+	font: 500 20px 'Roboto', Arial, sans-serif;
+	border: 1px solid #cfcfcf;
+	color: #28b8f7;
+	outline: 0;
+}
+
+input.error {
+	border: 1px solid #f82515;
+}
+
+button {
+	margin: 1em auto 0;
+	padding: 0.5em;
+	width: 80%;
+	display: block;
+	background-color: #28b8f7;
+	background-repeat: no-repeat;
+	background-position: 0% center;
+	background-size: 16px 12px;
+	color: #FFF;
+	font: 16px 'Roboto';
+	border: none;
+	transition: background-position 0.2s ease-out;
+}
+
+button:hover {
+	cursor: pointer;
+	background-color: #49c2f7;
+}
+
+button:focus {
+	outline: 0;
+}
+
+button.saving {
+	background-color: #3cd97b;
+	background-image: url(tick.png);
+	background-repeat: no-repeat;
+	background-position: 25% center;
+	background-size: 16px 12px;
+}
