@@ -1,11 +1,11 @@
 
 var backgroundPage = chrome.extension.getBackgroundPage()
-var minutes, frequency, loopage;
+var frequency, seconds, unitoftime, loopage;
 
 
 // set minutes value
 chrome.storage.sync.get('beveriser_minutes', function(result) {
-	minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
+	var minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
 	chrome.storage.sync.set({'beveriser_minutes': minutes})
 });
 
