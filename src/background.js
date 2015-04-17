@@ -1,54 +1,54 @@
 
 var backgroundPage = chrome.extension.getBackgroundPage()
+var minutes, frequency, loopage;
 
-// default 30 minutes
-localStorage['beveriser_minutes'] = (localStorage['beveriser_minutes'] == null) ? '30' : localStorage['beveriser_minutes'];
 
-// variables
-var counter = 0;
-var frequency = localStorage['beveriser_minutes'];
-var seconds = frequency * 60;
-var unitoftime = (frequency == 1) ? 'minute' : 'minutes';
-var loopage;
+// set minutes value
+chrome.storage.sync.get('beveriser_minutes', function(result) {
+	minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
+	chrome.storage.sync.set({'beveriser_minutes': minutes})
+});
+
 
 // start timer going
 function setTimerGoing() {
 
-	clearTime();
-
-	loopage = setInterval(function() {
-	    
-	    counter = counter + 1;
-		frequency = localStorage['beveriser_minutes'];
-		seconds = frequency * 60;
-		unitoftime = (frequency == 1) ? 'minute' : 'minutes';
-
-		var options = {
-		  type: "basic",
-		  title: "Reminder!",
-		  message: "It's been " + frequency + " " + unitoftime + " since you last beverised, time to hydrate!",
-		  iconUrl: "notification.png"
-		}
-
-	    if (counter == seconds) {
-
-	    	// notify!
-	    	chrome.notifications.clear("0", function() {
-			
-				chrome.notifications.create("0", options, function() {
-					counter = 0;
-				});
-	    	});
-	    }
-	}, 1000);
-}
-
-
-// clear timer when setting minutes value
-function clearTime() {
-
+	// clear previous interval
 	clearInterval(loopage);
-	counter = 0;
+	var counter = 0;
+
+	// set new interval
+	loopage = setInterval(function() {
+
+	    counter = counter + 1;
+
+		chrome.storage.sync.get('beveriser_minutes', function(result) {
+			
+			frequency = result.beveriser_minutes;
+			seconds = frequency * 60;
+			unitoftime = (frequency == 1) ? 'minute' : 'minutes';
+
+			var options = {
+			  type: "basic",
+			  title: "Reminder!",
+			  message: "It's been " + frequency + " " + unitoftime + " since you last beverised, time to hydrate!",
+			  iconUrl: "notification.png"
+			}
+
+		    if (counter == seconds) {
+
+		    	// clear if previous notification still there
+		    	chrome.notifications.clear("0", function() {
+					
+					// show notification
+					chrome.notifications.create("0", options, function() {
+						counter = 0;
+					});
+		    	});
+		    }
+		})
+
+	}, 1000);
 }
 
 

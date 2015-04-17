@@ -1,11 +1,17 @@
 
 var backgroundPage = chrome.extension.getBackgroundPage()
 
+
 // on load
 window.addEventListener('load', function(e) {
 	
 	e.preventDefault();
-	document.getElementById('minutesinput').value = localStorage['beveriser_minutes'];
+
+	// get minutes value
+	chrome.storage.sync.get('beveriser_minutes', function(result) {
+		document.getElementById('minutesinput').value = result.beveriser_minutes;
+	});
+
     document.getElementById('minutesform').addEventListener('submit', updateMinutes);
 });
 
@@ -23,17 +29,18 @@ function updateMinutes(e) {
 		return;
 	}
 
-	localStorage['beveriser_minutes'] = minutesInput.value;
+	// set minutes value in chrome storage
+	chrome.storage.sync.set({ 'beveriser_minutes': minutesInput.value })
 	minutesInput.classList.remove('error');
 	backgroundPage.setTimerGoing();
 	
 	// save animation
-	runSaveAnimation();
+	animateButton();
 }
 
 
 // save animation
-function runSaveAnimation() {
+function animateButton() {
 
 	var minutesButton = document.getElementById('minutesbutton');
 	if (minutesButton.classList.contains('saving')) return;
@@ -46,12 +53,10 @@ function runSaveAnimation() {
 
 		// reset button back to default state
 		setTimeout(function() {
-
 			minutesButton.classList.remove('saving');
 			minutesButton.innerHTML = 'Save';
 
 		}, 1500);
 
 	}, 200)
-
 }
