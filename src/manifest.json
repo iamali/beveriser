@@ -1,19 +1,21 @@
 {
-  "name": "Beveriser",
-  "version": "1.0",
-  "description": "This extension will remind you to drink.",
-
   "manifest_version": 2,
 
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
+  "name": "Beveriser",
+  "version": "1.0",
+  "author": "Ali Green",
+  "description": "This extension will remind you to drink.",
+  "short_name": "Beveriser",
  
   "icons": { 
       "16": "icon16.png",
       "48": "icon48.png",
       "128": "icon128.png" 
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
   },
 
   "browser_action": {
