@@ -6,7 +6,7 @@ var frequency, seconds, unitoftime, loopage;
 // set minutes value
 chrome.storage.sync.get('beveriser_minutes', function(result) {
 	var minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
-	chrome.storage.sync.set({'beveriser_minutes': minutes})
+	chrome.storage.sync.set({ 'beveriser_minutes': minutes })
 });
 
 
@@ -29,19 +29,20 @@ function setTimerGoing() {
 			unitoftime = (frequency == 1) ? 'minute' : 'minutes';
 
 			var options = {
-			  type: "basic",
-			  title: "Reminder!",
-			  message: "It's been " + frequency + " " + unitoftime + " since you last beverised, time to hydrate!",
-			  iconUrl: "notification.png"
+			  type: 'basic',
+			  title: 'Reminder!',
+			  message: 'It\'s been ' + frequency + ' ' + unitoftime + ' since you last beverised, time to hydrate!',
+			  iconUrl: 'notification.png',
+			  priority: 2
 			}
 
 		    if (counter == seconds) {
 
 		    	// clear if previous notification still there
-		    	chrome.notifications.clear("0", function() {
+		    	chrome.notifications.clear('0', function() {
 					
 					// show notification
-					chrome.notifications.create("0", options, function() {
+					chrome.notifications.create('0', options, function() {
 						counter = 0;
 					});
 		    	});
