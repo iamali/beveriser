@@ -2,11 +2,18 @@
 var backgroundPage = chrome.extension.getBackgroundPage()
 var frequency, seconds, unitoftime, loopage;
 
+backgroundPage.console.log('loaded...')
 
-// set minutes value
-chrome.storage.sync.get('beveriser_minutes', function(result) {
+
+// set storage values
+chrome.storage.sync.get(null, function(result) {
+	
 	var minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
-	chrome.storage.sync.set({ 'beveriser_minutes': minutes })
+	chrome.storage.sync.set({ 'beveriser_minutes': minutes });
+
+	var disable = (result.beveriser_disable == null) ? false : result.beveriser_disable;
+	chrome.storage.sync.set({ 'beveriser_disable': disable });
+
 });
 
 
@@ -22,7 +29,9 @@ function setTimerGoing() {
 
 	    counter = counter + 1;
 
-		chrome.storage.sync.get('beveriser_minutes', function(result) {
+	    chrome.storage.sync.get(null, function(result) {
+
+	    	if (result.beveriser_disable == true) return;
 			
 			frequency = result.beveriser_minutes;
 			seconds = frequency * 60;
@@ -44,6 +53,7 @@ function setTimerGoing() {
 					// show notification
 					chrome.notifications.create('0', options, function() {
 						counter = 0;
+						backgroundPage.console.log('New loop after ' + result.beveriser_minutes + ' minutes. ' + new Date())
 					});
 		    	});
 		    }

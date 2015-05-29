@@ -12,10 +12,19 @@
     <form id="minutesform">
     	<p><img src="icon.png" alt="" width="40" height="40" /></p>
     	<p>How often would you like to be reminded?</p>
-    	<label>Every</label>
-	    <input type="text" name="minutes" id="minutesinput" value="30" placeholder="" />
-	    <label>minutes</label>
-	    <button id="minutesbutton">Save</button>
+    	
+      <label class="row">
+        <label>Every</label>
+        <input type="text" name="minutes" id="minutesinput" value="30" placeholder="" />
+        <label>minutes</label>
+      </label>
+      
+      <label class="row">
+        <input type="checkbox" name="disable" id="disable" value="disabled">
+        <span>Temporarily disable</span>
+      </label>
+      
+      <button id="minutesbutton">Save</button>
     </form>
   </body>
 

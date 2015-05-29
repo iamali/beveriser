@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Beveriser",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Ali Green",
   "description": "This extension will remind you to drink.",
   "short_name": "Beveriser",
@@ -26,6 +26,7 @@
   "permissions": [
     "notifications",
     "activeTab",
-    "storage"
+    "storage",
+    "background"
   ]
 }

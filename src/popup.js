@@ -7,9 +7,10 @@ window.addEventListener('load', function(e) {
 	
 	e.preventDefault();
 
-	// get minutes value
-	chrome.storage.sync.get('beveriser_minutes', function(result) {
+	// get storage values
+	chrome.storage.sync.get(null, function(result) {
 		document.getElementById('minutesinput').value = result.beveriser_minutes;
+		document.getElementById('disable').checked = result.beveriser_disable;
 	});
 
     document.getElementById('minutesform').addEventListener('submit', updateMinutes);
@@ -20,18 +21,26 @@ window.addEventListener('load', function(e) {
 function updateMinutes(e) {
 
 	e.preventDefault();
+
 	var minutesInput = document.getElementById('minutesinput');
-	var inputValue = minutesInput.value;
+	var minutesValue = minutesInput.value;
+
+	var disable = document.getElementById('disable');
+	var disableValue = disable.checked;
 
 	// if not a number
-	if ( isNaN(inputValue) ) {
+	if ( isNaN(minutesValue) ) {
 		minutesInput.classList.add('error');
 		return;
 	}
 
 	// set minutes value in chrome storage
-	chrome.storage.sync.set({ 'beveriser_minutes': minutesInput.value })
+	chrome.storage.sync.set({ 'beveriser_minutes': minutesValue })
 	minutesInput.classList.remove('error');
+
+	// set disable value in chrome storage
+	chrome.storage.sync.set({ 'beveriser_disable': disableValue })
+
 	backgroundPage.setTimerGoing();
 	
 	// save animation

@@ -5,20 +5,32 @@ body {
 }
 
 p {
-	margin: 0;
+	margin: 0 0 0.75em;
 	font: 500 18px 'Roboto', Arial, sans-serif;
 	display: block;
 }
 
-p + p {
+img {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+label.row {
 	margin: 0 0 1em;
+	display: block;
 }
 
 label {
 	font-size: 14px;
 }
 
-input {
+label span {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 11px;
+}
+
+input[type=text] {
 	padding: 10px;
 	width: 40px;
 	text-align: center;
@@ -26,6 +38,12 @@ input {
 	border: 1px solid #cfcfcf;
 	color: #28b8f7;
 	outline: 0;
+}
+
+input[type=checkbox] {
+	display: inline-block;
+	vertical-align: middle;
+
 }
 
 input.error {
@@ -42,7 +60,7 @@ button {
 	background-position: 0% center;
 	background-size: 16px 12px;
 	color: #FFF;
-	font: 16px 'Roboto';
+	font: 16px 'Roboto', Arial, sans-serif;
 	border: none;
 	transition: background-position 0.2s ease-out;
 }
