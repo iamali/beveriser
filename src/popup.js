@@ -1,5 +1,5 @@
 
-var backgroundPage = chrome.extension.getBackgroundPage()
+var backgroundPage = chrome.extension.getBackgroundPage();
 
 
 // on load
@@ -28,8 +28,8 @@ function updateMinutes(e) {
 	var disable = document.getElementById('disable');
 	var disableValue = disable.checked;
 
-	// if not a number
-	if ( isNaN(minutesValue) ) {
+	// if not a number or less than 1
+	if ( isNaN(minutesValue) || minutesValue < 1 ) {
 		minutesInput.classList.add('error');
 		return;
 	}
@@ -41,7 +41,11 @@ function updateMinutes(e) {
 	// set disable value in chrome storage
 	chrome.storage.sync.set({ 'beveriser_disable': disableValue })
 
-	backgroundPage.setTimerGoing();
+	// stop alarm
+	backgroundPage.cancelAlarm();
+
+	// start alarm
+	backgroundPage.createAlarm();
 	
 	// save animation
 	animateButton();
