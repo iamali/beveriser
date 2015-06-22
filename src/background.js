@@ -1,56 +1,25 @@
 
 var backgroundPage = chrome.extension.getBackgroundPage()
-var frequency, seconds, unitoftime, loopage;
-
-backgroundPage.console.log('loaded...')
 
 
 
-
-// set storage values
-chrome.storage.sync.get(null, function(result) {
+// get/set storage values
+chrome.storage.sync.get('beveriser_minutes', function(result) {
 	
-	var minutes = (result.beveriser_minutes == null) ? '30' : result.beveriser_minutes;
+	var minutes = (result.beveriser_minutes == null) ? '20' : result.beveriser_minutes;
 	chrome.storage.sync.set({ 'beveriser_minutes': minutes });
-
-	var disable = (result.beveriser_disable == null) ? false : result.beveriser_disable;
-	chrome.storage.sync.set({ 'beveriser_disable': disable });
-
-	backgroundPage.createAlarm();
-});
-
-
-
-// create alarm
-function createAlarm() {
-
-	chrome.storage.sync.get(null, function(result) {
-
-		chrome.alarms.create('loopage', {
-			periodInMinutes: parseInt(result.beveriser_minutes)
-		});
-	})
-}
-
-
-
-// cancel alarm
-function cancelAlarm() {
-	chrome.alarms.clear('loopage');
-}
+	backgroundPage.createAlarm(minutes);
+})
 
 
 
 // listen for alarm
 chrome.alarms.onAlarm.addListener(function(alarm) {
 
-	chrome.storage.sync.get(null, function(result) {
-
-    	if (result.beveriser_disable == true) return;
+	chrome.storage.sync.get('beveriser_minutes', function(result) {
 		
-		frequency = result.beveriser_minutes;
-		seconds = frequency * 60;
-		unitoftime = (frequency == 1) ? 'minute' : 'minutes';
+		var frequency = result.beveriser_minutes;
+		var unitoftime = (frequency == 1) ? 'minute' : 'minutes';
 
 		var options = {
 		  type: 'basic',
@@ -60,13 +29,37 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 		  priority: 2
 		}
 
-    	// clear if previous notification still there
-    	chrome.notifications.clear('0', function() {
-			
-			// show notification
-			chrome.notifications.create('0', options, function() {
-				backgroundPage.console.log('New loop after ' + result.beveriser_minutes + ' minutes. ' + new Date())
-			});
-    	});
+		createNotification(options);
 	})
 })
+
+
+
+// create alarm
+function createAlarm(minutes) {
+
+	chrome.alarms.create('loopage', {
+		periodInMinutes: parseInt(minutes)
+	});
+}
+
+
+
+// cancel alarm
+function cancelAlarm() {
+
+	chrome.alarms.clear('loopage');
+	chrome.notifications.clear('0');
+}
+
+
+
+// create notification
+function createNotification(options) {
+
+	chrome.notifications.clear('0', function() {
+		chrome.notifications.create('0', options, function() {
+			backgroundPage.console.log('New loop started at ' + new Date())
+		})
+	})	
+}
