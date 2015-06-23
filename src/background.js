@@ -1,15 +1,11 @@
 
-var backgroundPage = chrome.extension.getBackgroundPage()
-
-
-
 // get/set storage values
 chrome.storage.sync.get('beveriser_minutes', function(result) {
 	
 	var minutes = (result.beveriser_minutes == null) ? '20' : result.beveriser_minutes;
 	chrome.storage.sync.set({ 'beveriser_minutes': minutes });
-	backgroundPage.createAlarm(minutes);
-})
+	createAlarm(minutes);
+});
 
 
 
@@ -21,17 +17,21 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 		var frequency = result.beveriser_minutes;
 		var unitoftime = (frequency == 1) ? 'minute' : 'minutes';
 
+		var manifest = chrome.runtime.getManifest();
+
 		var options = {
-		  type: 'basic',
-		  title: 'Reminder!',
-		  message: 'It\'s been ' + frequency + ' ' + unitoftime + ' since you last beverised, time to hydrate!',
-		  iconUrl: 'notification.png',
-		  priority: 2
+			type: 'basic',
+			title: 'Reminder!',
+			message: 'It\'s been ' + frequency + ' ' + unitoftime + ' since you last beverised, time to hydrate!',
+			iconUrl: 'notification.png',
+			priority: 2
 		}
 
+		console.log(options);
+
 		createNotification(options);
-	})
-})
+	});
+});
 
 
 
@@ -48,8 +48,8 @@ function createAlarm(minutes) {
 // cancel alarm
 function cancelAlarm() {
 
-	chrome.alarms.clear('loopage');
-	chrome.notifications.clear('0');
+	chrome.alarms.clearAll;
+	chrome.notifications.clear('notifyage');
 }
 
 
@@ -57,9 +57,9 @@ function cancelAlarm() {
 // create notification
 function createNotification(options) {
 
-	chrome.notifications.clear('0', function() {
-		chrome.notifications.create('0', options, function() {
-			backgroundPage.console.log('New loop started at ' + new Date())
-		})
-	})	
+	chrome.notifications.clear('notifyage', function() {
+		chrome.notifications.create('notifyage', options, function() {
+			console.log('New loop started at ' + new Date())
+		});
+	});
 }

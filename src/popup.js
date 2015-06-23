@@ -24,6 +24,7 @@ function updateMinutes(e) {
 	// cancel current alarm
 	backgroundPage.cancelAlarm();
 
+	// get values from form
 	var minutesInput = document.getElementById('minutesinput');
 	var minutesValue = minutesInput.value;
 
@@ -43,12 +44,12 @@ function updateMinutes(e) {
 	}
 
 	// set minutes value in chrome storage
-	chrome.storage.sync.set({ 'beveriser_minutes': minutesValue })
+	chrome.storage.sync.set({ 'beveriser_minutes': minutesValue });
 	minutesInput.classList.remove('error');
 
 	// start alarm
 	backgroundPage.createAlarm(minutesValue);
-	
+
 	// save animation
 	animateButton();
 }
@@ -74,5 +75,5 @@ function animateButton() {
 
 		}, 1500);
 
-	}, 200)
+	}, 200);
 }
